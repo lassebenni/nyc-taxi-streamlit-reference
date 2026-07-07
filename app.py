@@ -1,8 +1,8 @@
-"""NYC Taxi metrics dashboard — reference Streamlit app.
+"""NYC Taxi metrics dashboard — Week 11 Streamlit exercise.
 
-Reads the Week 10 dbt mart ``fct_trips`` from Azure Postgres and renders KPI
-tiles, a daily trip-volume chart, and a data-freshness panel. No orchestration
-involved: the app queries the table directly.
+Reads the Week 10 dbt mart ``fct_trips`` from Azure Postgres. Your job: implement
+``get_daily_trips`` so the daily trip-volume chart renders. The KPI tiles and
+freshness panel are already done. See EXERCISE.md.
 """
 
 import os
@@ -34,13 +34,16 @@ def get_trip_metrics(pg_url: str, schema: str) -> dict:
 
 @st.cache_data(ttl=60)
 def get_daily_trips(pg_url: str, schema: str) -> pd.DataFrame:
-    with psycopg2.connect(pg_url) as conn, conn.cursor() as cur:
-        cur.execute(
-            f"SELECT date_trunc('day', pickup_datetime) AS day, COUNT(*) AS trips "
-            f"FROM {schema}.fct_trips GROUP BY 1 ORDER BY 1"
-        )
-        rows = cur.fetchall()
-    return pd.DataFrame(rows, columns=["day", "trips"]).set_index("day")
+    """Return daily trip counts for fct_trips.
+
+    TODO: implement this function.
+    Use psycopg2.connect(pg_url) to connect.
+    Run: SELECT date_trunc('day', pickup_datetime) AS day, COUNT(*) AS trips
+         FROM {schema}.fct_trips GROUP BY 1 ORDER BY 1
+    Return a DataFrame with a "day" index and a "trips" column
+    (e.g. pd.DataFrame(rows, columns=["day", "trips"]).set_index("day")).
+    """
+    raise NotImplementedError("TODO: implement get_daily_trips")
 
 
 @st.cache_data(ttl=60)
@@ -63,7 +66,10 @@ c2.metric("Avg fare", f"${metrics['avg_fare']:.2f}")
 c3.metric("Total fare revenue", f"${metrics['total_fare']:,.0f}")
 
 st.subheader("Daily trip volume")
-st.line_chart(get_daily_trips(PG_URL, PG_SCHEMA))
+try:
+    st.line_chart(get_daily_trips(PG_URL, PG_SCHEMA))
+except NotImplementedError:
+    st.warning("Implement `get_daily_trips` to see the trend chart.")
 
 st.subheader("Data freshness")
 freshness = get_fct_trips_freshness(PG_URL, PG_SCHEMA)
