@@ -14,8 +14,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-PG_URL = os.environ["PG_URL"]
-PG_SCHEMA = os.environ.get("PG_SCHEMA", "dev_yourname")
+POSTGRES_URL = os.environ["POSTGRES_URL"]
+DB_SCHEMA = os.environ.get("DB_SCHEMA", "dev_yourname")
 
 
 @st.cache_data(ttl=60)
@@ -56,17 +56,17 @@ def get_fct_trips_freshness(pg_url: str, schema: str) -> dict:
 st.title("NYC Taxi Metrics")
 
 st.subheader("Headline KPIs")
-metrics = get_trip_metrics(PG_URL, PG_SCHEMA)
+metrics = get_trip_metrics(POSTGRES_URL, DB_SCHEMA)
 c1, c2, c3 = st.columns(3)
 c1.metric("Total trips", f"{metrics['trip_count']:,}")
 c2.metric("Avg fare", f"${metrics['avg_fare']:.2f}")
 c3.metric("Total fare revenue", f"${metrics['total_fare']:,.0f}")
 
 st.subheader("Daily trip volume")
-st.line_chart(get_daily_trips(PG_URL, PG_SCHEMA))
+st.line_chart(get_daily_trips(POSTGRES_URL, DB_SCHEMA))
 
 st.subheader("Data freshness")
-freshness = get_fct_trips_freshness(PG_URL, PG_SCHEMA)
+freshness = get_fct_trips_freshness(POSTGRES_URL, DB_SCHEMA)
 f1, f2 = st.columns(2)
 f1.metric("Row count", f"{freshness['row_count']:,}")
 last = freshness["last_pickup"]
