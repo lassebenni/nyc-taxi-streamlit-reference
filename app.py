@@ -1,8 +1,9 @@
 """NYC Taxi metrics dashboard — reference Streamlit app.
 
 Reads the Week 10 dbt mart ``fct_trips`` from Azure Postgres and renders KPI
-tiles, a daily trip-volume chart, and a data-freshness panel. No orchestration
-involved: the app queries the table directly.
+tiles, a daily trip-volume chart, a data-freshness panel, and database-side
+health metrics read from Postgres's catalog. No orchestration involved: the app
+queries the table directly.
 """
 
 import os
@@ -53,6 +54,31 @@ def get_fct_trips_freshness(pg_url: str, schema: str) -> dict:
     return {"row_count": row_count or 0, "last_pickup": last_pickup}
 
 
+@st.cache_data(ttl=60)
+def get_dataset_health(pg_url: str, schema: str) -> dict:
+    """Database-side metrics from Postgres's own catalog, not from fct_trips rows."""
+    with psycopg2.connect(pg_url) as conn, conn.cursor() as cur:
+        cur.execute(f"SELECT pg_size_pretty(pg_total_relation_size('{schema}.fct_trips'))")
+        (mart_size,) = cur.fetchone()
+        cur.execute(
+            f"SELECT MIN(pickup_datetime)::date, MAX(pickup_datetime)::date, "
+            f"COUNT(DISTINCT pickup_datetime::date) FROM {schema}.fct_trips"
+        )
+        first_day, last_day, n_days = cur.fetchone()
+        cur.execute(
+            "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = %s",
+            (schema,),
+        )
+        (table_count,) = cur.fetchone()
+    return {
+        "mart_size": mart_size,
+        "first_day": first_day,
+        "last_day": last_day,
+        "n_days": n_days,
+        "table_count": table_count,
+    }
+
+
 st.title("NYC Taxi Metrics")
 
 st.subheader("Headline KPIs")
@@ -71,3 +97,14 @@ f1, f2 = st.columns(2)
 f1.metric("Row count", f"{freshness['row_count']:,}")
 last = freshness["last_pickup"]
 f2.metric("Last pickup", str(last) if last else "None")
+
+st.subheader("Dataset health")
+try:
+    health = get_dataset_health(POSTGRES_URL, DB_SCHEMA)
+    h1, h2, h3 = st.columns(3)
+    h1.metric("Mart size on disk", health["mart_size"])
+    h2.metric("Date range", f"{health['first_day']} to {health['last_day']}")
+    h3.metric("Tables in schema", health["table_count"])
+    st.caption(f"Covers {health['n_days']} days of trips.")
+except Exception:
+    st.caption("Database-side metrics unavailable: your role may lack catalog access.")
