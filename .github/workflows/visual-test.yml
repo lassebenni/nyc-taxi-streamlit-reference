@@ -1,0 +1,42 @@
+name: Visual test
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+jobs:
+  visual-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install app dependencies
+        run: pip install -r requirements.txt
+
+      - name: Start Streamlit app
+        env:
+          POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
+          DB_SCHEMA: ${{ secrets.DB_SCHEMA }}
+        run: |
+          streamlit run app.py --server.port 8501 --server.headless true &
+          npx wait-on http://localhost:8501 --timeout 60000
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install test dependencies
+        run: npm install
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Run visual test
+        env:
+          ARGOS_TOKEN: ${{ secrets.ARGOS_TOKEN }}
+        run: npx playwright test

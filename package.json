@@ -1,0 +1,11 @@
+{
+  "name": "nyc-taxi-streamlit-reference-visual-tests",
+  "private": true,
+  "scripts": {
+    "test": "playwright test"
+  },
+  "devDependencies": {
+    "@argos-ci/playwright": "^4",
+    "@playwright/test": "^1.48.0"
+  }
+}
