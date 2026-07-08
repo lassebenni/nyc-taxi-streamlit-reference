@@ -17,7 +17,7 @@ The app renders it as three `st.metric` tiles (Total trips, Avg fare, Total fare
 
 ```bash
 pip install -r requirements.txt
-cp .env.example .env      # set PG_URL and PG_SCHEMA
+cp .env.example .env      # set POSTGRES_URL and DB_SCHEMA
 streamlit run app.py
 ```
 
