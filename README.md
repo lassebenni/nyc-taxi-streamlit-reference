@@ -25,11 +25,11 @@ git switch exercise-kpi-metrics        # then read EXERCISE.md
 
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env                   # set your Week 9/10 PG_URL + PG_SCHEMA
+cp .env.example .env                   # set your Week 9/10 POSTGRES_URL + DB_SCHEMA
 streamlit run app.py
 ```
 
 ## Prerequisites
 
 - Your Week 10 `fct_trips` table populated in `dev_<name>` on the shared Azure Postgres.
-- Your Postgres connection string (`PG_URL`) and schema name (`PG_SCHEMA`).
+- Your Postgres connection string (`POSTGRES_URL`) and schema name (`DB_SCHEMA`).

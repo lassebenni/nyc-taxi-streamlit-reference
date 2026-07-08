@@ -24,7 +24,7 @@ The app renders it with `st.line_chart`.
 
 ```bash
 pip install -r requirements.txt
-cp .env.example .env      # set PG_URL and PG_SCHEMA
+cp .env.example .env      # set POSTGRES_URL and DB_SCHEMA
 streamlit run app.py
 ```
 
