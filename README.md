@@ -5,7 +5,9 @@ Week 10 dbt mart `fct_trips` straight from Azure Postgres — no Airflow, no orc
 
 `main` is the **starter**: all three query functions (`get_trip_metrics`, `get_daily_trips`,
 `get_fct_trips_freshness`) are stubbed with TODOs. Use it to follow along with the Streamlit
-Fundamentals chapter, or to build the full dashboard yourself in Building a Metrics Dashboard.
+Fundamentals chapter, and as the base each exercise branch below builds on. Your Week 11
+assignment dashboard is a separate, from-scratch project (`week11-streamlit/` in your own
+repo) built in the Building a Metrics Dashboard chapter, not a fork of this repo.
 
 Each exercise below is an independent **branch** that starts from the complete app with exactly
 one function stubbed out; follow its `EXERCISE.md`, then diff against the matching `-solution`

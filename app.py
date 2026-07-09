@@ -1,12 +1,12 @@
 """NYC Taxi metrics dashboard — Week 11 Streamlit starter.
 
 Reads the Week 10 dbt mart ``fct_trips`` from Azure Postgres. This is the
-starting point for the chapter: all three query functions are stubbed with
-TODOs. Fill them in as you go through the "Streamlit Fundamentals" and
-"Building a Metrics Dashboard" chapters, or pick a specific exercise branch
+starting point for the "Streamlit Fundamentals" chapter: all three query
+functions are stubbed with TODOs. Pick a specific exercise branch
 (03-exercise-kpi-metrics, 04-exercise-daily-trend) to practice one function
 at a time. See each branch's EXERCISE.md, or the -solution branches for the
-fully working app.
+fully working app. Your Week 11 assignment dashboard is a separate project;
+see the "Building a Metrics Dashboard" chapter.
 """
 
 import os
