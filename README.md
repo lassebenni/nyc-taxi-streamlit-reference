@@ -3,9 +3,13 @@
 Reference Streamlit metrics app for **HYF Data Track Week 11 (Dashboarding)**. It reads the
 Week 10 dbt mart `fct_trips` straight from Azure Postgres — no Airflow, no orchestration.
 
-`main` is the finished app. Each exercise is a **branch** that starts from the finished project
-with one function stubbed out; follow its `EXERCISE.md`, then diff against the matching
-`-solution` branch.
+`main` is the **starter**: all three query functions (`get_trip_metrics`, `get_daily_trips`,
+`get_fct_trips_freshness`) are stubbed with TODOs. Use it to follow along with the Streamlit
+Fundamentals chapter, or to build the full dashboard yourself in Building a Metrics Dashboard.
+
+Each exercise below is an independent **branch** that starts from the complete app with exactly
+one function stubbed out; follow its `EXERCISE.md`, then diff against the matching `-solution`
+branch, which has all three functions implemented.
 
 ## Exercises
 
@@ -14,7 +18,8 @@ with one function stubbed out; follow its `EXERCISE.md`, then diff against the m
 | KPI tiles from `fct_trips` | [`03-exercise-kpi-metrics`](../../tree/03-exercise-kpi-metrics) | [`03-exercise-kpi-metrics-solution`](../../tree/03-exercise-kpi-metrics-solution) |
 | Daily trip-volume chart | [`04-exercise-daily-trend`](../../tree/04-exercise-daily-trend) | [`04-exercise-daily-trend-solution`](../../tree/04-exercise-daily-trend-solution) |
 
-Each branch is independent (all start from the complete app), so you can do them in any order.
+Each exercise branch is independent (all start from the complete app with one function removed),
+so you can do them in any order.
 
 ## Setup
 
