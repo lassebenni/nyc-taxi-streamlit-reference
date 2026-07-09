@@ -21,13 +21,13 @@ Each branch is independent (all start from the complete app), so you can do them
 ```bash
 git clone https://github.com/lassebenni/nyc-taxi-streamlit-reference.git
 cd nyc-taxi-streamlit-reference
-git switch 03-exercise-kpi-metrics        # then read EXERCISE.md
 
-python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
+uv sync                                # creates .venv and installs from uv.lock
 cp .env.example .env                   # set your Week 9/10 POSTGRES_URL + DB_SCHEMA
-streamlit run app.py
+uv run streamlit run app.py
 ```
+
+> New to `uv`? It replaces `python -m venv` + `pip install -r requirements.txt`: `uv sync` creates the virtual environment and installs the exact versions pinned in `uv.lock` in one step. `uv run` runs a command inside that environment without activating it manually.
 
 ## Prerequisites
 
