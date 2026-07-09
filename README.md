@@ -3,31 +3,25 @@
 Reference Streamlit metrics app for **HYF Data Track Week 11 (Dashboarding)**. It reads the
 Week 10 dbt mart `fct_trips` straight from Azure Postgres — no Airflow, no orchestration.
 
-`main` is the **starter**: all three query functions (`get_trip_metrics`, `get_daily_trips`,
-`get_fct_trips_freshness`) are stubbed with TODOs. Use it to follow along with the Streamlit
-Fundamentals chapter, and as the base each exercise branch below builds on. Your Week 11
-assignment dashboard is a separate, from-scratch project (`week11-streamlit/` in your own
-repo) built in the Building a Metrics Dashboard chapter, not a fork of this repo.
+Branches are grouped by which chapter or practice exercise they support:
 
-Each exercise below is an independent **branch** that starts from the complete app with exactly
-one function stubbed out; follow its `EXERCISE.md`, then diff against the matching `-solution`
-branch, which has all three functions implemented.
+| Branch | Purpose |
+| --- | --- |
+| [`chapter-4-start`](../../tree/chapter-4-start) | Starter for **Streamlit Fundamentals**: imports, credentials, `st.title` only. Add the chapter's primitives and Postgres/caching examples directly to `app.py`. |
+| [`chapter-5-start`](../../tree/chapter-5-start) | Starter for **Building a Metrics Dashboard**: adds the `run_query` caching helper and page config. Build the four panels and the borough filter from the chapter into `app.py`. |
+| [`chapter-5-solution`](../../tree/chapter-5-solution) | The finished dashboard from Building a Metrics Dashboard: all four panels plus the sidebar borough filter. Compare your work against it, or clone it directly as your Week 11 assignment starting point. |
+| [`practice-kpi-metrics`](../../tree/practice-kpi-metrics) / [`-solution`](../../tree/practice-kpi-metrics-solution) | Practice exercise: rebuild the headline-KPI panel from Building a Metrics Dashboard without looking at the chapter. |
+| [`practice-daily-trend`](../../tree/practice-daily-trend) / [`-solution`](../../tree/practice-daily-trend-solution) | Practice exercise: rebuild the daily trip-volume panel from Building a Metrics Dashboard without looking at the chapter. |
 
-## Exercises
-
-| Exercise | Start branch | Solution branch |
-| --- | --- | --- |
-| KPI tiles from `fct_trips` | [`03-exercise-kpi-metrics`](../../tree/03-exercise-kpi-metrics) | [`03-exercise-kpi-metrics-solution`](../../tree/03-exercise-kpi-metrics-solution) |
-| Daily trip-volume chart | [`04-exercise-daily-trend`](../../tree/04-exercise-daily-trend) | [`04-exercise-daily-trend-solution`](../../tree/04-exercise-daily-trend-solution) |
-
-Each exercise branch is independent (all start from the complete app with one function removed),
-so you can do them in any order.
+Each `-solution` branch has a matching non-solution branch: attempt the exercise yourself
+first, then `git switch` to the solution branch to compare.
 
 ## Setup
 
 ```bash
 git clone https://github.com/lassebenni/nyc-taxi-streamlit-reference.git
 cd nyc-taxi-streamlit-reference
+git switch chapter-4-start             # or any other branch from the table above
 
 uv sync                                # creates .venv and installs from uv.lock
 cp .env.example .env                   # set your Week 9/10 POSTGRES_URL + DB_SCHEMA
