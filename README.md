@@ -11,8 +11,8 @@ with one function stubbed out; follow its `EXERCISE.md`, then diff against the m
 
 | Exercise | Start branch | Solution branch |
 | --- | --- | --- |
-| KPI tiles from `fct_trips` | [`exercise-kpi-metrics`](../../tree/exercise-kpi-metrics) | [`exercise-kpi-metrics-solution`](../../tree/exercise-kpi-metrics-solution) |
-| Daily trip-volume chart | [`exercise-daily-trend`](../../tree/exercise-daily-trend) | [`exercise-daily-trend-solution`](../../tree/exercise-daily-trend-solution) |
+| KPI tiles from `fct_trips` | [`03-exercise-kpi-metrics`](../../tree/03-exercise-kpi-metrics) | [`03-exercise-kpi-metrics-solution`](../../tree/03-exercise-kpi-metrics-solution) |
+| Daily trip-volume chart | [`04-exercise-daily-trend`](../../tree/04-exercise-daily-trend) | [`04-exercise-daily-trend-solution`](../../tree/04-exercise-daily-trend-solution) |
 
 Each branch is independent (all start from the complete app), so you can do them in any order.
 
@@ -21,7 +21,7 @@ Each branch is independent (all start from the complete app), so you can do them
 ```bash
 git clone https://github.com/lassebenni/nyc-taxi-streamlit-reference.git
 cd nyc-taxi-streamlit-reference
-git switch exercise-kpi-metrics        # then read EXERCISE.md
+git switch 03-exercise-kpi-metrics        # then read EXERCISE.md
 
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
