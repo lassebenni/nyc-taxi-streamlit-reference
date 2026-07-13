@@ -24,7 +24,14 @@ st.subheader("Practice / live-build track")
 st.markdown(
     "- `practice-kpi-metrics` (+`-solution`) — the live class build; fill `render_kpi_panel`.\n"
     "- `practice-caching` (+`-solution`) — add `@st.cache_data` and see why caching matters.\n"
-    "- `practice-daily-trend` (+`-solution`) — fill `render_daily_trend_panel`."
+    "- `practice-daily-trend` (+`-solution`) — fill `render_daily_trend_panel`.\n"
+    "- `practice-error-handling` (+`-solution`) — wrap a failing panel in `try/except`."
+)
+
+st.subheader("Advanced track (optional, beyond the chapters)")
+st.markdown(
+    "- `practice-advanced-state` (+`-solution`) — `@st.cache_resource` + `st.session_state`.\n"
+    "- `practice-form` (+`-solution`) — batch filters with `st.form` so it reruns on **Apply**."
 )
 
 st.divider()
