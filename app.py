@@ -1,45 +1,51 @@
-"""NYC Taxi Streamlit Reference — main landing branch.
+"""NYC Taxi — Week 11 practice: metric definitions as a contract.
 
-This branch is a signpost, not a dashboard. It holds the shared project setup
-(pyproject.toml, uv.lock, .env.example) and points you at the branch to start on.
-Run it to see where to go, then `git switch` to a chapter or practice branch.
+This app is finished and correct. The exercise is NOT in this file: it is to make
+`metric_definitions.md` describe exactly what this code does. Read each query,
+then reconcile the definition file so a teammate could reproduce these numbers.
 """
 
+import os
+
+import pandas as pd
+import sqlalchemy
 import streamlit as st
+from dotenv import load_dotenv
 
-st.set_page_config(page_title="NYC Taxi Streamlit Reference", page_icon="🗺️")
-st.title("NYC Taxi — Streamlit Reference")
-st.caption("HYF Data Track · Week 11 (Dashboarding)")
+load_dotenv()
 
-st.info("You are on the **main** branch. Pick a branch below, then `git switch` to it.")
+POSTGRES_URL = os.environ["POSTGRES_URL"]
+DB_SCHEMA = os.environ.get("DB_SCHEMA", "dev_yourname")
 
-st.subheader("Chapter track (self-study)")
-st.markdown(
-    "- `chapter-4-start` — Streamlit Fundamentals (Ch4): build up from a bare app.\n"
-    "- `chapter-5-start` — Building a Metrics Dashboard (Ch5): assemble the panels.\n"
-    "- `chapter-5-solution` — the finished dashboard (full reference)."
-)
+st.set_page_config(page_title="Metric definitions", page_icon="📐")
 
-st.subheader("Practice / live-build track")
-st.markdown(
-    "- `practice-kpi-metrics` (+`-solution`) — the live class build; fill `render_kpi_panel`.\n"
-    "- `practice-caching` (+`-solution`) — add `@st.cache_data` and see why caching matters.\n"
-    "- `practice-daily-trend` (+`-solution`) — fill `render_daily_trend_panel`.\n"
-    "- `practice-error-handling` (+`-solution`) — wrap a failing panel in `try/except`.\n"
-    "- `practice-metric-definitions` (+`-solution`) — Ch6: reconcile a drifted metric contract."
-)
 
-st.subheader("Advanced track (optional, beyond the chapters)")
-st.markdown(
-    "- `practice-advanced-state` (+`-solution`) — `@st.cache_resource` + `st.session_state`.\n"
-    "- `practice-form` (+`-solution`) — batch filters with `st.form` so it reruns on **Apply**."
-)
+@st.cache_data(ttl=300)
+def run_query(sql: str) -> pd.DataFrame:
+    engine = sqlalchemy.create_engine(POSTGRES_URL)
+    with engine.connect() as conn:
+        return pd.read_sql(sql, conn)
 
-st.divider()
-st.code(
-    "git switch practice-kpi-metrics   # or any branch above\n"
-    "uv sync                           # pinned Python via .python-version\n"
-    "cp .env.example .env              # set POSTGRES_URL + DB_SCHEMA\n"
-    "uv run streamlit run app.py",
-    language="bash",
-)
+
+st.title("📐 Two metrics, one contract")
+st.caption("Every number here must match its entry in metric_definitions.md")
+
+# avg_fare_per_trip EXCLUDES zero and negative fares (note the WHERE clause).
+avg_fare = run_query(
+    f"SELECT AVG(fare_amount) AS v "
+    f"FROM {DB_SCHEMA}.fct_trips "
+    f"WHERE fare_amount > 0"
+).iloc[0]["v"]
+
+# trips_per_day: average number of trips per calendar pickup day.
+trips_per_day = run_query(
+    f"SELECT AVG(daily_count) AS v FROM ("
+    f"  SELECT date_trunc('day', pickup_datetime) AS day, COUNT(*) AS daily_count "
+    f"  FROM {DB_SCHEMA}.fct_trips "
+    f"  GROUP BY 1"
+    f") d"
+).iloc[0]["v"]
+
+c1, c2 = st.columns(2)
+c1.metric("Avg fare per trip", f"${avg_fare:,.2f}")
+c2.metric("Avg trips per day", f"{trips_per_day:,.0f}")
