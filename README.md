@@ -3,6 +3,25 @@
 Reference Streamlit metrics app for **HYF Data Track Week 11 (Dashboarding)**. It reads the
 Week 10 dbt mart `fct_trips` straight from Azure Postgres — no Airflow, no orchestration.
 
+## Architecture: source to dashboard
+
+```mermaid
+flowchart LR
+    raw[("Raw NYC taxi data")] --> dbt["dbt models<br/>(Week 10)"]
+    dbt --> mart[("fct_trips mart<br/>dev_&lt;name&gt; · Azure Postgres")]
+    mart -->|"sqlalchemy + pd.read_sql<br/>cached with @st.cache_data"| app["Streamlit app<br/>run_query() helper"]
+    app --> panels["KPI tiles · daily trend<br/>· freshness panel"]
+    panels --> user["You / your team<br/>browser :8501"]
+
+    classDef store fill:#eaf3fc,stroke:#509ee3,stroke-width:2px,color:#333;
+    classDef code fill:#fdecea,stroke:#ff4b4b,stroke-width:2px,color:#333;
+    class raw,mart store;
+    class app,panels code;
+```
+
+The Streamlit app is **code-first**: every query and computed field is Python you control. It reads
+the same mart a Metabase dashboard would, but you own the logic end to end.
+
 There are two tracks through this repo, both landing on the same finished dashboard:
 
 - **Chapter track (self-study):** follow the written chapters and build the app up from a bare
