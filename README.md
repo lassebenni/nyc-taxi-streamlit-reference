@@ -28,7 +28,8 @@ There are two tracks through this repo, both landing on the same finished dashbo
   starter. `chapter-4-start` → `chapter-5-start` → `chapter-5-solution`.
 - **Practice / live-build track:** the app is complete except for one stubbed function you fill
   in. Used for the live class build (Ch4-Ch5) and as focused solo practice. `practice-kpi-metrics`,
-  `practice-caching`, `practice-daily-trend`, and `practice-error-handling`.
+  `practice-caching`, `practice-daily-trend`, `practice-error-handling`, and
+  `practice-metric-definitions`.
 - **Advanced track (optional, beyond the chapters):** two patterns you will want on real
   dashboards but that Week 11 does not require: `practice-advanced-state` (session state +
   cached resource) and `practice-form` (batch inputs with `st.form`).
@@ -44,6 +45,7 @@ There are two tracks through this repo, both landing on the same finished dashbo
 | [`practice-caching`](../../tree/practice-caching) / [`-solution`](../../tree/practice-caching-solution) | Practice | Why Streamlit apps must cache DB calls: `run_query` ships uncached, you add `@st.cache_data` and watch the query time drop. |
 | [`practice-daily-trend`](../../tree/practice-daily-trend) / [`-solution`](../../tree/practice-daily-trend-solution) | Practice | Focused exercise: `render_daily_trend_panel` is stubbed, the KPI and freshness panels are provided. |
 | [`practice-error-handling`](../../tree/practice-error-handling) / [`-solution`](../../tree/practice-error-handling-solution) | Practice | A dashboard panel queries a missing table and crashes the whole app; wrap it in `try/except` so one broken panel degrades to a warning instead of taking down the page. |
+| [`practice-metric-definitions`](../../tree/practice-metric-definitions) / [`-solution`](../../tree/practice-metric-definitions-solution) | Practice | Companion to Ch6: the app is correct but `metric_definitions.md` has drifted from the SQL. Reconcile the five-field definitions so a teammate could reproduce every on-screen number. |
 | [`practice-advanced-state`](../../tree/practice-advanced-state) / [`-solution`](../../tree/practice-advanced-state-solution) | Advanced | Beyond the chapters: cache the engine with `@st.cache_resource` and keep a counter across reruns with `st.session_state`. |
 | [`practice-form`](../../tree/practice-form) / [`-solution`](../../tree/practice-form-solution) | Advanced | Beyond the chapters: wrap several filters in `st.form` so the query only reruns when **Apply** is clicked, not on every keystroke. |
 

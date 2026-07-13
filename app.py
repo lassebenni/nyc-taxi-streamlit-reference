@@ -25,7 +25,8 @@ st.markdown(
     "- `practice-kpi-metrics` (+`-solution`) — the live class build; fill `render_kpi_panel`.\n"
     "- `practice-caching` (+`-solution`) — add `@st.cache_data` and see why caching matters.\n"
     "- `practice-daily-trend` (+`-solution`) — fill `render_daily_trend_panel`.\n"
-    "- `practice-error-handling` (+`-solution`) — wrap a failing panel in `try/except`."
+    "- `practice-error-handling` (+`-solution`) — wrap a failing panel in `try/except`.\n"
+    "- `practice-metric-definitions` (+`-solution`) — Ch6: reconcile a drifted metric contract."
 )
 
 st.subheader("Advanced track (optional, beyond the chapters)")
