@@ -27,8 +27,8 @@ There are two tracks through this repo, both landing on the same finished dashbo
 - **Chapter track (self-study):** follow the written chapters and build the app up from a bare
   starter. `chapter-4-start` → `chapter-5-start` → `chapter-5-solution`.
 - **Practice / live-build track:** the app is complete except for one stubbed function you fill
-  in. Used for the live class build (Ch4-Ch5) and as focused solo practice. `practice-kpi-metrics`
-  and `practice-daily-trend`.
+  in. Used for the live class build (Ch4-Ch5) and as focused solo practice. `practice-kpi-metrics`,
+  `practice-caching`, and `practice-daily-trend`.
 
 ## Branches
 
@@ -38,6 +38,7 @@ There are two tracks through this repo, both landing on the same finished dashbo
 | [`chapter-5-start`](../../tree/chapter-5-start) | Chapter | Starter for **Building a Metrics Dashboard (Ch5)**: adds the `run_query` caching helper and page config. Build the panels and the sidebar filter from the chapter. |
 | [`chapter-5-solution`](../../tree/chapter-5-solution) *(default)* | Chapter | The finished dashboard: all panels plus the sidebar filter. The full reference; clone it as an assignment starting point. |
 | [`practice-kpi-metrics`](../../tree/practice-kpi-metrics) / [`-solution`](../../tree/practice-kpi-metrics-solution) | Practice | The **live class build** (Ch4-Ch5) and a focused exercise: `render_kpi_panel` is stubbed, the daily-trend and freshness panels are provided. |
+| [`practice-caching`](../../tree/practice-caching) / [`-solution`](../../tree/practice-caching-solution) | Practice | Why Streamlit apps must cache DB calls: `run_query` ships uncached, you add `@st.cache_data` and watch the query time drop. |
 | [`practice-daily-trend`](../../tree/practice-daily-trend) / [`-solution`](../../tree/practice-daily-trend-solution) | Practice | Focused exercise: `render_daily_trend_panel` is stubbed, the KPI and freshness panels are provided. |
 
 Each `-solution` branch has a matching non-solution branch: attempt the exercise yourself

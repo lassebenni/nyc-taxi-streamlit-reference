@@ -23,6 +23,7 @@ st.markdown(
 st.subheader("Practice / live-build track")
 st.markdown(
     "- `practice-kpi-metrics` (+`-solution`) — the live class build; fill `render_kpi_panel`.\n"
+    "- `practice-caching` (+`-solution`) — add `@st.cache_data` and see why caching matters.\n"
     "- `practice-daily-trend` (+`-solution`) — fill `render_daily_trend_panel`."
 )
 
