@@ -3,15 +3,23 @@
 Reference Streamlit metrics app for **HYF Data Track Week 11 (Dashboarding)**. It reads the
 Week 10 dbt mart `fct_trips` straight from Azure Postgres — no Airflow, no orchestration.
 
-Branches are grouped by which chapter or practice exercise they support:
+There are two tracks through this repo, both landing on the same finished dashboard:
 
-| Branch | Purpose |
-| --- | --- |
-| [`chapter-4-start`](../../tree/chapter-4-start) | Starter for **Streamlit Fundamentals**: imports, credentials, `st.title` only. Add the chapter's primitives and Postgres/caching examples directly to `app.py`. |
-| [`chapter-5-start`](../../tree/chapter-5-start) | Starter for **Building a Metrics Dashboard**: adds the `run_query` caching helper and page config. Build the four panels and the borough filter from the chapter into `app.py`. |
-| [`chapter-5-solution`](../../tree/chapter-5-solution) | The finished dashboard from Building a Metrics Dashboard: all four panels plus the sidebar borough filter. Compare your work against it, or clone it directly as your Week 11 assignment starting point. |
-| [`practice-kpi-metrics`](../../tree/practice-kpi-metrics) / [`-solution`](../../tree/practice-kpi-metrics-solution) | Practice exercise: rebuild the headline-KPI panel from Building a Metrics Dashboard without looking at the chapter. |
-| [`practice-daily-trend`](../../tree/practice-daily-trend) / [`-solution`](../../tree/practice-daily-trend-solution) | Practice exercise: rebuild the daily trip-volume panel from Building a Metrics Dashboard without looking at the chapter. |
+- **Chapter track (self-study):** follow the written chapters and build the app up from a bare
+  starter. `chapter-4-start` → `chapter-5-start` → `chapter-5-solution`.
+- **Practice / live-build track:** the app is complete except for one stubbed function you fill
+  in. Used for the live class build (Ch4-Ch5) and as focused solo practice. `practice-kpi-metrics`
+  and `practice-daily-trend`.
+
+## Branches
+
+| Branch | Track | Purpose |
+| --- | --- | --- |
+| [`chapter-4-start`](../../tree/chapter-4-start) | Chapter | Starter for **Streamlit Fundamentals (Ch4)**: imports, credentials, `st.title` only. Follow the chapter and add each primitive to `app.py`. |
+| [`chapter-5-start`](../../tree/chapter-5-start) | Chapter | Starter for **Building a Metrics Dashboard (Ch5)**: adds the `run_query` caching helper and page config. Build the panels and the sidebar filter from the chapter. |
+| [`chapter-5-solution`](../../tree/chapter-5-solution) *(default)* | Chapter | The finished dashboard: all panels plus the sidebar filter. The full reference; clone it as an assignment starting point. |
+| [`practice-kpi-metrics`](../../tree/practice-kpi-metrics) / [`-solution`](../../tree/practice-kpi-metrics-solution) | Practice | The **live class build** (Ch4-Ch5) and a focused exercise: `render_kpi_panel` is stubbed, the daily-trend and freshness panels are provided. |
+| [`practice-daily-trend`](../../tree/practice-daily-trend) / [`-solution`](../../tree/practice-daily-trend-solution) | Practice | Focused exercise: `render_daily_trend_panel` is stubbed, the KPI and freshness panels are provided. |
 
 Each `-solution` branch has a matching non-solution branch: attempt the exercise yourself
 first, then `git switch` to the solution branch to compare.
@@ -21,7 +29,7 @@ first, then `git switch` to the solution branch to compare.
 ```bash
 git clone https://github.com/lassebenni/nyc-taxi-streamlit-reference.git
 cd nyc-taxi-streamlit-reference
-git switch chapter-4-start             # or any other branch from the table above
+git switch chapter-4-start              # chapter self-study; or a practice-* branch for the live build
 
 uv sync                                # creates .venv and installs from uv.lock
 cp .env.example .env                   # set your Week 9/10 POSTGRES_URL + DB_SCHEMA
