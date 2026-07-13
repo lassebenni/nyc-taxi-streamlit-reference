@@ -1,45 +1,50 @@
-"""NYC Taxi Streamlit Reference — main landing branch.
+"""NYC Taxi — Week 11 ADVANCED practice: session state + cached resource (solution).
 
-This branch is a signpost, not a dashboard. It holds the shared project setup
-(pyproject.toml, uv.lock, .env.example) and points you at the branch to start on.
-Run it to see where to go, then `git switch` to a chapter or practice branch.
+- `get_engine` is wrapped in `@st.cache_resource`, so the SQLAlchemy engine
+  (connection pool) is created once and reused across reruns and sessions.
+- The Refresh counter lives in `st.session_state`, so it survives reruns and
+  actually counts up each click (a plain variable would reset to 0 every rerun).
 """
 
+import os
+
+import pandas as pd
+import sqlalchemy
 import streamlit as st
+from dotenv import load_dotenv
 
-st.set_page_config(page_title="NYC Taxi Streamlit Reference", page_icon="🗺️")
-st.title("NYC Taxi — Streamlit Reference")
-st.caption("HYF Data Track · Week 11 (Dashboarding)")
+load_dotenv()
 
-st.info("You are on the **main** branch. Pick a branch below, then `git switch` to it.")
+POSTGRES_URL = os.environ["POSTGRES_URL"]
+DB_SCHEMA = os.environ.get("DB_SCHEMA", "dev_yourname")
 
-st.subheader("Chapter track (self-study)")
-st.markdown(
-    "- `chapter-4-start` — Streamlit Fundamentals (Ch4): build up from a bare app.\n"
-    "- `chapter-5-start` — Building a Metrics Dashboard (Ch5): assemble the panels.\n"
-    "- `chapter-5-solution` — the finished dashboard (full reference)."
-)
+st.set_page_config(page_title="Advanced: state + resource", page_icon="🧠")
 
-st.subheader("Practice / live-build track")
-st.markdown(
-    "- `practice-kpi-metrics` (+`-solution`) — the live class build; fill `render_kpi_panel`.\n"
-    "- `practice-caching` (+`-solution`) — add `@st.cache_data` and see why caching matters.\n"
-    "- `practice-daily-trend` (+`-solution`) — fill `render_daily_trend_panel`.\n"
-    "- `practice-error-handling` (+`-solution`) — wrap a failing panel in `try/except`.\n"
-    "- `practice-metric-definitions` (+`-solution`) — Ch6: reconcile a drifted metric contract."
-)
 
-st.subheader("Advanced track (optional, beyond the chapters)")
-st.markdown(
-    "- `practice-advanced-state` (+`-solution`) — `@st.cache_resource` + `st.session_state`.\n"
-    "- `practice-form` (+`-solution`) — batch filters with `st.form` so it reruns on **Apply**."
-)
+@st.cache_resource
+def get_engine():
+    return sqlalchemy.create_engine(POSTGRES_URL)
 
-st.divider()
-st.code(
-    "git switch practice-kpi-metrics   # or any branch above\n"
-    "uv sync                           # pinned Python via .python-version\n"
-    "cp .env.example .env              # set POSTGRES_URL + DB_SCHEMA\n"
-    "uv run streamlit run app.py",
-    language="bash",
-)
+
+@st.cache_data(ttl=300)
+def run_query(sql: str) -> pd.DataFrame:
+    with get_engine().connect() as conn:
+        return pd.read_sql(sql, conn)
+
+
+st.title("🧠 Advanced: session state + cached resource")
+
+# The counter survives reruns because it lives in session_state.
+if "refreshes" not in st.session_state:
+    st.session_state["refreshes"] = 0
+if st.button("Refresh"):
+    st.session_state["refreshes"] += 1
+
+st.metric("Times you clicked Refresh", st.session_state["refreshes"])
+
+kpis = run_query(
+    f"SELECT COUNT(*) AS trips, AVG(fare_amount) AS avg_fare FROM {DB_SCHEMA}.fct_trips"
+).iloc[0]
+c1, c2 = st.columns(2)
+c1.metric("Total trips", f"{int(kpis['trips']):,}")
+c2.metric("Average fare", f"${kpis['avg_fare']:.2f}")
