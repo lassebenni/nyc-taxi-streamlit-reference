@@ -1,22 +1,32 @@
-# Exercise: Daily trip-volume chart
+# Exercise: Payment-type sidebar filter
 
-Add the daily trend line chart to the metrics dashboard without looking back at the
-Building a Metrics Dashboard chapter. The KPI tiles and freshness panel are already
-implemented — you only fill in `render_daily_trend_panel`.
+Add a sidebar dropdown that filters **every** panel (KPIs, daily trend, freshness)
+by payment type. This is the one Required assignment skill that no other exercise
+drills, so it is worth doing even if the rest of the app felt easy.
+
+The KPI, daily-trend, and freshness panels are already built and already
+interpolate a `where_clause` into their SQL. You only add the sidebar control
+that sets it.
 
 ## Task
 
-Open `app.py` and implement `render_daily_trend_panel()`:
+Open `app.py` and replace the `where_clause = ""` stub near the top:
 
-1. Call `run_query(sql)` (already defined above it) with:
+1. Query the distinct payment types:
    ```sql
-   SELECT date_trunc('day', pickup_datetime) AS day, COUNT(*) AS trips
+   SELECT DISTINCT payment_type_label
    FROM {DB_SCHEMA}.fct_trips
-   GROUP BY 1
+   WHERE payment_type_label IS NOT NULL
    ORDER BY 1
    ```
-2. Set `"day"` as the index with `.set_index("day")`.
-3. Render with `st.line_chart`.
+2. Add the dropdown:
+   ```python
+   selected = st.sidebar.selectbox("Payment type", ["All"] + payment_types)
+   ```
+3. Build the filter clause:
+   ```python
+   where_clause = "" if selected == "All" else f"WHERE payment_type_label = '{selected}'"
+   ```
 
 ## Run it
 
@@ -28,15 +38,17 @@ uv run streamlit run app.py
 
 ## Success criteria
 
-- The line chart shows trips per day for your real `fct_trips` data.
-- The query goes through `run_query`, which is already wrapped in `@st.cache_data(ttl=300)`.
-- No credentials hardcoded — everything comes from environment variables.
+- The sidebar shows a "Payment type" dropdown with "All" plus each payment type.
+- Picking a value updates the KPIs, the trend chart, and the freshness panel together.
+- Choosing "All" shows every trip again.
+- No credentials hardcoded; every query still goes through the cached `run_query`.
 
-## Stretch
+## Why string interpolation is safe here
 
-Resample to weekly buckets (`date_trunc('week', ...)`) and add a `st.radio` to switch the chart
-between daily and weekly granularity.
+The value can only be one of the fixed dropdown options, so splicing it into the
+SQL string cannot inject anything. The moment the value comes from a free-text
+`st.text_input`, switch to a parameterized query (`%s` / bound parameters) instead.
 
 ## Compare
 
-Check your work against the `practice-daily-trend-solution` branch.
+Check your work against the `practice-payment-filter-solution` branch.
