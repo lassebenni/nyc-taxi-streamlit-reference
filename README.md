@@ -1,9 +1,9 @@
 # NYC Taxi — Streamlit Reference
-### Practice solution · Daily trend chart
+### Practice solution · Payment-type sidebar filter
 
 Reference Streamlit metrics app for **HYF Data Track Week 11 (Dashboarding)**, reading the Week 10 dbt mart `fct_trips` from Azure Postgres.
 
-You are on **`practice-daily-trend-solution`**: the reference solution for the daily-trend exercise. Compare it against your own attempt on `practice-daily-trend`.
+You are on **`practice-payment-filter-solution`**: the reference solution for the payment-type sidebar-filter exercise. A single `st.sidebar.selectbox` filters every panel (KPIs, daily trend, freshness) by `payment_type_label`. Compare it against your own attempt on `practice-payment-filter`.
 
 > 🧭 **All branches:** see the [`main`](../../tree/main) branch for the full map of the chapter track vs the practice track.
 
@@ -14,7 +14,7 @@ flowchart LR
     raw[("Raw NYC taxi data")] --> dbt["dbt models<br/>(Week 10)"]
     dbt --> mart[("fct_trips mart<br/>dev_&lt;name&gt; · Azure Postgres")]
     mart -->|"sqlalchemy + pd.read_sql<br/>cached with @st.cache_data"| app["Streamlit app<br/>run_query() helper"]
-    app --> panels["KPI tiles · daily trend<br/>· freshness panel"]
+    app --> panels["KPI tiles · daily trend<br/>· freshness · sidebar filter"]
     panels --> user["You / your team<br/>browser :8501"]
 
     classDef store fill:#eaf3fc,stroke:#509ee3,stroke-width:2px,color:#333;
@@ -26,7 +26,7 @@ flowchart LR
 ## Setup
 
 ```bash
-git switch practice-daily-trend-solution
+git switch practice-payment-filter-solution
 uv sync                                # creates .venv from uv.lock (Python pinned via .python-version)
 cp .env.example .env                   # set your Week 9/10 POSTGRES_URL + DB_SCHEMA
 uv run streamlit run app.py
